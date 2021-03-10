@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Business.Abstract;
 using Business.Constants;
 using Core.Utilities.Results;
@@ -7,7 +8,7 @@ using Entities.Concrete;
 
 namespace Business.Concrete
 {
-    public class FundManager:IFundService
+    public class FundManager : IFundService
     {
         IFundDal _fundDal;
 
@@ -17,9 +18,9 @@ namespace Business.Concrete
         }
 
 
-        public IDataResult<List<Fund>> GetFundsByUserId()
+        public IDataResult<List<Fund>> GetFundsByUserId(int userId)
         {
-            throw new System.NotImplementedException();
+            return new SuccessDataResult<List<Fund>>(_fundDal.GetAll(x=>x.UserId==userId));
         }
 
         public IResult Add(Fund fund)
@@ -30,12 +31,22 @@ namespace Business.Concrete
 
         public IResult Delete(Fund fund)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                _fundDal.Delete(fund);
+                return new SuccessResult(Messages.FundDeleted);
+            }
+            catch (ArgumentException)
+            {
+                return new ErrorResult(Messages.FundIdInvalid);
+            }
+
         }
 
         public IResult Update(Fund fund)
         {
-            throw new System.NotImplementedException();
+            _fundDal.Update(fund);
+            return new SuccessResult(Messages.FundUpdated);
         }
     }
 }

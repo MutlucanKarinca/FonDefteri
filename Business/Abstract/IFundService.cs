@@ -6,7 +6,7 @@ namespace Business.Abstract
 {
     public interface IFundService
     {
-        IDataResult<List<Fund>> GetFundsByUserId();
+        IDataResult<List<Fund>> GetFundsByUserId(int userId);
         IResult Add(Fund fund);
         IResult Delete(Fund fund);
         IResult Update(Fund fund);
